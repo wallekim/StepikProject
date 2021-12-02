@@ -1,26 +1,28 @@
 size, quantity = map(int, input().split())
 
 queue = []
-prev_depature = 0
-first_arrival = []
+all_depature = []
+all_arrival = []
+
 
 for i in range(quantity):
     arrival, duration = map(int, input().split())
     if len(queue) < size:
         if i == 0:
-            prev_depature = arrival
-        print(prev_depature)
+            all_depature.append(arrival)
+        print(max(all_depature[-1], arrival))
         queue.append(duration)
-        first_arrival.append(arrival)
-        prev_depature += duration
+        all_arrival.append(arrival)
+        all_depature.append(max(all_depature[-1], arrival) + duration)
     else:
-        if arrival >= queue[0] + first_arrival[0]:
-            diff = arrival - prev_depature
+        if arrival >= queue[0] + max(all_depature[0], all_arrival[0]):
             queue.pop(0)
-            first_arrival.pop(0)
-            print(prev_depature + diff)
+            all_arrival.pop(0)
+            all_depature.pop(0)
+            print(max(all_depature[-1], arrival))
             queue.append(duration)
-            first_arrival.append(arrival)
-            prev_depature += duration
+            all_arrival.append(arrival)
+            all_depature.append(max(all_depature[-1], arrival) + duration)
         else:
             print(-1)
+
